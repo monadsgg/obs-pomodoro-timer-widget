@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+    />
+    <title>Pomodoro Timer</title>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1.5rem;
+        font-weight: 800;
+      }
+
+      .widget-container {
+        width: 350px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
+          rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+        border-radius: 10px;
+      }
+
+      #timer {
+        font-family: "Press Start 2P", monospace;
+        font-size: 3rem;
+      }
+
+      .progress-wrapper {
+        width: 100%;
+        border: 1px solid black;
+      }
+
+      #progress {
+        width: 0%;
+        height: 10px;
+        background-color: #81f4d2;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="widget-container">
+      <div id="counter">Session 1/2</div>
+      <div id="timer">00:00</div>
+      <div id="caption">Focus time 📚</div>
+      <div class="progress-wrapper">
+        <div id="progress"></div>
+      </div>
+    </div>
+    <script>
+      const counterDiv = document.getElementById("counter");
+      const timerDiv = document.getElementById("timer");
+      const captionDiv = document.getElementById("caption");
+      const progressDiv = document.getElementById("progress");
+
+      // set timer
+      const pomoTime = 50;
+      timerDiv.textContent = `${pomoTime}:00`;
+
+      // set counter
+      const totalSessions = 2;
+      let currentSession = localStorage.getItem("currentSession") ?? 1;
+      counterDiv.textContent = `Session ${currentSession}/${totalSessions}`;
+
+      // handle update timer
+      let totalSeconds = pomoTime * 60;
+      let remainingSeconds = totalSeconds;
+
+      function updateTimer() {
+        const minutes = Math.floor(remainingSeconds / 60)
+          .toString()
+          .padStart(2, "0");
+        const seconds = Math.floor(remainingSeconds % 60)
+          .toString()
+          .padStart(2, "0");
+        timerDiv.textContent = `${minutes}:${seconds}`;
+
+        // update progress value
+        const progress =
+          ((totalSeconds - remainingSeconds) / totalSeconds) * 100;
+        progressDiv.style.width = `${progress}%`;
+
+        if (remainingSeconds > 0) {
+          remainingSeconds--;
+        } else {
+          // stop the timer
+          clearInterval(timerInterval);
+
+          let updatedSessionCounter = parseInt(currentSession) + 1;
+
+          if (updatedSessionCounter > totalSessions) {
+            captionDiv.textContent = `Done for the day! 🥳`;
+            localStorage.removeItem("currentSession");
+          } else {
+            // set updated session to localStorage
+            localStorage.setItem("currentSession", updatedSessionCounter);
+          }
+        }
+      }
+
+      const timerInterval = setInterval(updateTimer, 1000);
+    </script>
+  </body>
+</html>
