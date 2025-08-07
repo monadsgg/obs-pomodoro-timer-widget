@@ -7,7 +7,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
     />
-    <title>Pomodoro Timer</title>
+    <title>Pomodoro - Focus Timer Widget</title>
     <style>
       body {
         font-family: Arial, Helvetica, sans-serif;
@@ -16,12 +16,13 @@
       }
 
       .widget-container {
-        width: 350px;
+        width: 300px;
         padding: 20px;
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 10px;
+        background-color: rgba(0, 0, 0, 0.4);
         box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
           rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
         border-radius: 10px;
@@ -40,7 +41,7 @@
       #progress {
         width: 0%;
         height: 10px;
-        background-color: #81f4d2;
+        background-color: #83c16c;
       }
     </style>
   </head>
@@ -60,11 +61,11 @@
       const progressDiv = document.getElementById("progress");
 
       // set timer
-      const pomoTime = 50;
+      const pomoTime = 50; // 📝: Edit this to your desired focus time
       timerDiv.textContent = `${pomoTime}:00`;
 
       // set counter
-      const totalSessions = 2;
+      const totalSessions = 2; // 📝: Edit this to your desired study sessions
       let currentSession = localStorage.getItem("currentSession") ?? 1;
       counterDiv.textContent = `Session ${currentSession}/${totalSessions}`;
 
@@ -73,12 +74,8 @@
       let remainingSeconds = totalSeconds;
 
       function updateTimer() {
-        const minutes = Math.floor(remainingSeconds / 60)
-          .toString()
-          .padStart(2, "0");
-        const seconds = Math.floor(remainingSeconds % 60)
-          .toString()
-          .padStart(2, "0");
+        const minutes = formatTime(Math.floor(remainingSeconds / 60));
+        const seconds = formatTime(Math.floor(remainingSeconds % 60));
         timerDiv.textContent = `${minutes}:${seconds}`;
 
         // update progress value
@@ -102,6 +99,11 @@
             localStorage.setItem("currentSession", updatedSessionCounter);
           }
         }
+      }
+
+      // helper function to format time
+      function formatTime(value) {
+        return value.toString().padStart(2, "0");
       }
 
       const timerInterval = setInterval(updateTimer, 1000);
