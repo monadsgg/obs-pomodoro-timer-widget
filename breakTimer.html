@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+    />
+    <title>Pomodoro - Break Timer Widget</title>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1.5rem;
+        font-weight: 800;
+      }
+
+      .widget-container {
+        width: 350px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+
+      #timer {
+        font-family: "Press Start 2P", monospace;
+        font-size: 3rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="widget-container">
+      <div id="caption">Break Time</div>
+      <div id="timer">00:00</div>
+    </div>
+    <script>
+      let timerDiv = document.getElementById("timer");
+
+      let pomoTime = 10; // 📝: Edit this to your desired break time
+      let totalSeconds = pomoTime * 60;
+
+      // set initial timer
+      timerDiv.textContent = `${pomoTime}:00`;
+
+      function updateTimer() {
+        const minutes = formatTime(Math.floor(totalSeconds / 60));
+        const seconds = formatTime(Math.floor(totalSeconds % 60));
+        timerDiv.textContent = `${minutes}:${seconds}`;
+
+        if (totalSeconds > 0) {
+          totalSeconds--;
+        } else {
+          clearInterval(timerInterval);
+        }
+      }
+
+      function formatTime(value) {
+        return value.toString().padStart(2, "0");
+      }
+
+      const timerInterval = setInterval(updateTimer, 1000);
+    </script>
+  </body>
+</html>
