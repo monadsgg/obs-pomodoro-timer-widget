@@ -36,8 +36,9 @@
     </div>
     <script>
       let timerDiv = document.getElementById("timer");
+      const searchParams = new URLSearchParams(window.location.search);
 
-      let pomoTime = 10; // 📝: Edit this to your desired break time
+      let pomoTime = searchParams.get("time");
       let totalSeconds = pomoTime * 60;
 
       // set initial timer

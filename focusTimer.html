@@ -60,12 +60,14 @@
       const captionDiv = document.getElementById("caption");
       const progressDiv = document.getElementById("progress");
 
+      const searchParams = new URLSearchParams(window.location.search);
+
       // set timer
-      const pomoTime = 50; // 📝: Edit this to your desired focus time
+      const pomoTime = searchParams.get("time");
       timerDiv.textContent = `${pomoTime}:00`;
 
       // set counter
-      const totalSessions = 2; // 📝: Edit this to your desired study sessions
+      const totalSessions = searchParams.get("session");
       let currentSession = localStorage.getItem("currentSession") ?? 1;
       counterDiv.textContent = `Session ${currentSession}/${totalSessions}`;
 
